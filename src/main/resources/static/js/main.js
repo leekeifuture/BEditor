@@ -37,6 +37,7 @@ Vue.component('message-form', {
                     result.json().then(data => {
                         var index = getIndex(this.messages, data.id);
                         this.messages.splice(index, 1, data);
+                        this.text = '';
                         this.id = '';
                     }))
             } else {
