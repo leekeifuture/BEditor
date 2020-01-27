@@ -1,15 +1,19 @@
 <!DOCTYPE HTML>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8" />
     <title>BEditor</title>
     <meta name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
+    <!-- Vue.js dependencies -->
     <script type="text/javascript"
             src="js/vue.min.js"></script>
     <script type="text/javascript"
             src="js/vue-resource.js"></script>
+    <script type="text/javascript" th:inline="javascript">
+        let frontendData = [[${frontendData}]];
+    </script>
 </head>
 <body>
 <h3>BEditor</h3>

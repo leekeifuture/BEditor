@@ -4,5 +4,5 @@ import com.company.BEditor.domain.Message;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface MessageRepo extends JpaRepository<Message, Long> {
+public interface IMessageRepo extends JpaRepository<Message, Long> {
 }

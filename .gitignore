@@ -1,5 +1,5 @@
 ### Project files ###
-application*.properties
+application.properties
 
 ### Default ignored files ###
 workspace.xml

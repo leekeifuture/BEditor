@@ -1,7 +1,7 @@
 package com.company.BEditor.config;
 
 import com.company.BEditor.domain.User;
-import com.company.BEditor.repo.UserDetailRepo;
+import com.company.BEditor.repo.IUserDetailRepo;
 
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
@@ -21,19 +21,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .antMatcher("/**")
                 .authorizeRequests()
-                .mvcMatchers("/").permitAll()
+                .antMatchers("/", "/login/**", "/js/**", "/error/**").permitAll()
                 .anyRequest().authenticated()
+                .and()
+                .logout().logoutSuccessUrl("/").permitAll()
                 .and()
                 .csrf().disable();
     }
 
     @Bean
-    public PrincipalExtractor principalExtractor(UserDetailRepo userDetailRepo) {
+    public PrincipalExtractor principalExtractor(IUserDetailRepo iUserDetailRepo) {
         return map -> {
             String id = (String) map.get("sub");
 
-            User user = userDetailRepo.findById(id).orElseGet(() -> {
+            User user = iUserDetailRepo.findById(id).orElseGet(() -> {
                 User newUser = new User();
 
                 newUser.setId(id);
@@ -48,7 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
             user.setLastVisit(LocalDateTime.now());
 
-            return userDetailRepo.save(user);
+            return iUserDetailRepo.save(user);
         };
     }
 }
