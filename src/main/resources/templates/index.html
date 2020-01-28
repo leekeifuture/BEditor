@@ -6,11 +6,6 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-    <!-- Vue.js dependencies -->
-    <script type="text/javascript"
-            src="js/vue.min.js"></script>
-    <script type="text/javascript"
-            src="js/vue-resource.js"></script>
     <script type="text/javascript" th:inline="javascript">
         let frontendData = [[${frontendData}]];
     </script>
@@ -18,6 +13,6 @@
 <body>
 <h3>BEditor</h3>
 <div id="app">{{ message }}</div>
-<script src="js/main.js"></script>
+<script th:src="${isDevMode} ? 'http://localhost:8000/main.js' : 'js/main.js'"></script>
 </body>
 </html>

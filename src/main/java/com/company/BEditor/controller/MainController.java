@@ -4,6 +4,7 @@ import com.company.BEditor.domain.User;
 import com.company.BEditor.repo.IMessageRepo;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,9 @@ public class MainController {
 
     private final IMessageRepo iMessageRepo;
 
+    @Value("${spring.profiles.active}")
+    private String profile;
+
     @Autowired
     @Lazy
     public MainController(IMessageRepo iMessageRepo) {
@@ -33,6 +37,7 @@ public class MainController {
         data.put("messages", iMessageRepo.findAll());
 
         model.addAttribute("frontendData", data);
+        model.addAttribute("isDevMode", "dev".equals(profile));
 
         return "index";
     }

@@ -1,5 +1,6 @@
 ### Project files ###
 application.properties
+node_modules/
 
 ### Default ignored files ###
 workspace.xml
