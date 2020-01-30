@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -63,5 +65,11 @@ public class MessageController {
     @DeleteMapping("/{id}")
     public void removeMessage(@PathVariable("id") Message message) {
         iMessageRepo.delete(message);
+    }
+
+    @MessageMapping("/changeMessage")
+    @SendTo("/topic/activity")
+    public Message message(Message message) {
+        return iMessageRepo.save(message);
     }
 }

@@ -1,5 +1,9 @@
 ### Project files ###
 application.properties
+
+## JS ##
+yarn.lock
+package-lock.json
 node_modules/
 
 ### Default ignored files ###
