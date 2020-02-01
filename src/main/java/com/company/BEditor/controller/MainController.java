@@ -33,8 +33,10 @@ public class MainController {
     public String main(@AuthenticationPrincipal User user, Model model) {
         HashMap<Object, Object> data = new HashMap<>();
 
-        data.put("profile", user);
-        data.put("messages", iMessageRepo.findAll());
+        if (user != null) {
+            data.put("profile", user);
+            data.put("messages", iMessageRepo.findAll());
+        }
 
         model.addAttribute("frontendData", data);
         model.addAttribute("isDevMode", "dev".equals(profile));

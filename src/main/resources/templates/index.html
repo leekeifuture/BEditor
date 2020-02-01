@@ -4,14 +4,16 @@
     <meta charset="UTF-8" />
     <title>BEditor</title>
     <meta name="viewport"
-          content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+          content="width=device-width, initial-scale=1, shrink-to-fit=no,
+          maximum-scale=1, user-scalable=no, minimal-ui">
 
+    <link rel="stylesheet" type="text/css"
+          href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons">
     <script type="text/javascript" th:inline="javascript">
         let frontendData = [[${frontendData}]];
     </script>
 </head>
 <body>
-<h3>BEditor</h3>
 <div id="app">{{ message }}</div>
 <script th:src="${isDevMode} ? 'http://localhost:8000/main.js' : 'js/main.js'"></script>
 </body>
