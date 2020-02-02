@@ -10,7 +10,7 @@ export default new Vuex.Store({
         profile: frontendData.profile
     },
     getters: {
-        sortedMessages: state => state.messages.sort(
+        sortedMessages: state => (state.messages || []).sort(
             (a, b) => -(a.id - b.id))
     },
     mutations: {
