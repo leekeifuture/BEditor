@@ -6,7 +6,7 @@
         <v-card-actions>
             <v-btn value="Edit" @click="edit" small flat round>Edit</v-btn>
             <v-btn icon @click="del" small>
-                delete
+                <v-icon>delete</v-icon>
             </v-btn>
         </v-card-actions>
     </v-card>

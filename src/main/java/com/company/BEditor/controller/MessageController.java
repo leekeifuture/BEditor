@@ -2,14 +2,15 @@ package com.company.BEditor.controller;
 
 import com.company.BEditor.domain.Message;
 import com.company.BEditor.domain.Views;
+import com.company.BEditor.dto.EventType;
+import com.company.BEditor.dto.ObjectType;
 import com.company.BEditor.repo.IMessageRepo;
+import com.company.BEditor.util.WsSender;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,17 +22,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 @RestController
 @RequestMapping("/message")
 public class MessageController {
 
     private final IMessageRepo iMessageRepo;
+    private final BiConsumer<EventType, Message> wsSender;
 
     @Autowired
     @Lazy
-    public MessageController(IMessageRepo iMessageRepo) {
+    public MessageController(IMessageRepo iMessageRepo, WsSender wsSender) {
         this.iMessageRepo = iMessageRepo;
+        this.wsSender = wsSender.getSender(ObjectType.MESSAGE, Views.IdName.class);
     }
 
     @GetMapping
@@ -49,7 +53,12 @@ public class MessageController {
     @PostMapping
     public Message createMessage(@RequestBody Message message) {
         message.setCreationDate(LocalDateTime.now());
-        return iMessageRepo.save(message);
+
+        Message updatedMessage = iMessageRepo.save(message);
+
+        wsSender.accept(EventType.CREATE, updatedMessage);
+
+        return updatedMessage;
     }
 
     @PutMapping("/{id}")
@@ -59,17 +68,16 @@ public class MessageController {
     ) {
         BeanUtils.copyProperties(message, messageFromDb, "id");
 
-        return iMessageRepo.save(messageFromDb);
+        Message updatedMessage = iMessageRepo.save(messageFromDb);
+
+        wsSender.accept(EventType.UPDATE, updatedMessage);
+
+        return updatedMessage;
     }
 
     @DeleteMapping("/{id}")
     public void removeMessage(@PathVariable("id") Message message) {
         iMessageRepo.delete(message);
-    }
-
-    @MessageMapping("/changeMessage")
-    @SendTo("/topic/activity")
-    public Message message(Message message) {
-        return iMessageRepo.save(message);
+        wsSender.accept(EventType.REMOVE, message);
     }
 }
