@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -19,6 +20,7 @@ import lombok.ToString;
 @Table
 @ToString(of = {"id", "text"})
 @EqualsAndHashCode(of = {"id"})
+@Data
 public class Message {
 
     @Id
@@ -33,27 +35,12 @@ public class Message {
     @JsonView(Views.FullMessage.class)
     private LocalDateTime creationDate;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public LocalDateTime getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(LocalDateTime creationDate) {
-        this.creationDate = creationDate;
-    }
+    @JsonView(Views.FullMessage.class)
+    private String link;
+    @JsonView(Views.FullMessage.class)
+    private String linkTitle;
+    @JsonView(Views.FullMessage.class)
+    private String linkDescription;
+    @JsonView(Views.FullMessage.class)
+    private String linkCover;
 }

@@ -32,6 +32,7 @@ dependencies {
     implementation('org.springframework.session:spring-session-jdbc')
     implementation('org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.1.0.RELEASE')
     implementation('org.postgresql:postgresql')
+    implementation('org.jsoup:jsoup:1.12.1')
     implementation('org.projectlombok:lombok')
     implementation('javax.xml.bind:jaxb-api')
 }
