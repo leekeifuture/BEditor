@@ -1,9 +1,10 @@
 package com.company.BEditor.controller;
 
 import com.company.BEditor.domain.Message;
-import com.company.BEditor.dto.MetaDto;
+import com.company.BEditor.domain.User;
 import com.company.BEditor.domain.Views;
 import com.company.BEditor.dto.EventType;
+import com.company.BEditor.dto.MetaDto;
 import com.company.BEditor.dto.ObjectType;
 import com.company.BEditor.repo.IMessageRepo;
 import com.company.BEditor.util.WsSender;
@@ -16,6 +17,7 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -67,9 +69,13 @@ public class MessageController {
     }
 
     @PostMapping
-    public Message createMessage(@RequestBody Message message) throws IOException {
+    public Message createMessage(
+            @RequestBody Message message,
+            @AuthenticationPrincipal User user
+    ) throws IOException {
         message.setCreationDate(LocalDateTime.now());
         fillMeta(message);
+        message.setAuthor(user);
 
         Message updatedMessage = iMessageRepo.save(message);
 
